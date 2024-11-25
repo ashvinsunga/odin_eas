@@ -3,7 +3,8 @@ let message = document.querySelector('#message')
 let messageMirror = document.querySelector('#mirror')
 let submitButton = document.querySelector('#submit')
 let footerBtns = document.querySelectorAll("#buttons button")
-let selectedColor = "blue"
+let selectedColor = "red"
+let currentOpacity = 0.0
 
 let redBtn = document.querySelector("#red-btn")
 let blackBtn = document.querySelector("#black-btn")
@@ -13,9 +14,21 @@ let eraserBtn = document.querySelector("#eraser-btn")
 
 drawBoard()
 
-redBtn.onclick = () => selectedColor = "red"
-blackBtn.onclick = () => selectedColor = "black"
-randomBtn.onclick = () => selectedColor = "#"+Math.floor(Math.random()*16777215).toString(16); 
+redBtn.onclick = () => {
+  selectedColor = "red"
+  resetOpacity()
+}
+
+blackBtn.onclick = () => {
+  selectedColor = "black"
+  resetOpacity()
+}
+
+randomBtn.onclick = () => {
+  selectedColor = "random"
+  resetOpacity()
+}
+
 eraserBtn.onclick = () => selectedColor = "white"
 
 userInput.addEventListener('focus', showHint)
@@ -70,7 +83,6 @@ function drawBoard () {
       
           board.appendChild(columnTile)
         }
-
       }
 
       startColor()
@@ -80,7 +92,15 @@ function startColor (){
   let tiles = document.getElementsByClassName("row-tile");
   for (let i = 0; i < tiles.length; i++) {
       tiles[i].addEventListener("mouseover",(e) => {
-        tiles[i].style.backgroundColor = selectedColor;
+        if (selectedColor === "random"){
+          console.log(e.eventPhase)
+          tiles[i].style.backgroundColor = "#"+Math.floor(Math.random()*16777215).toString(16); 
+        } else{
+          tiles[i].style.opacity = currentOpacity
+          tiles[i].style.backgroundColor = selectedColor;
+        }
+        currentOpacity+=0.1
+
       });
       }
 }
@@ -94,3 +114,5 @@ function showHint(){
 function mirrorValue() {
   messageMirror.textContent = ` x ${userInput.value}`;
 }
+
+const resetOpacity = () => currentOpacity = 0; 

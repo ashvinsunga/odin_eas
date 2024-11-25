@@ -20,7 +20,11 @@ html,body {
     align-items: center;
 }
 
-#userInput {
+#instruction {
+    font-size: x-large;
+}
+
+#userInput, #mirror{
     font-size: large;
     font-weight: 700;
     text-align: center;
