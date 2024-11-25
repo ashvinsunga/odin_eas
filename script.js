@@ -2,11 +2,27 @@ let userInput = document.querySelector("#userInput")
 let message = document.querySelector('#message')
 let messageMirror = document.querySelector('#mirror')
 let submitButton = document.querySelector('#submit')
+let footerBtns = document.querySelectorAll("#buttons button")
+let selectedColor = "blue"
 
+let redBtn = document.querySelector("#red-btn")
+let blackBtn = document.querySelector("#black-btn")
+let randomBtn = document.querySelector("#random-btn")
+let eraserBtn = document.querySelector("#eraser-btn")
+
+
+drawBoard()
+
+redBtn.onclick = () => selectedColor = "red"
+blackBtn.onclick = () => selectedColor = "black"
+randomBtn.onclick = () => selectedColor = "#"+Math.floor(Math.random()*16777215).toString(16); 
+eraserBtn.onclick = () => selectedColor = "white"
 
 userInput.addEventListener('focus', showHint)
 userInput.addEventListener('keyup', mirrorValue)
 submitButton.addEventListener('click', drawBoard)
+
+
 
 
 function drawBoard () {
@@ -14,9 +30,9 @@ function drawBoard () {
   board.innerHTML = "";
   let userValue = userInput.value
 
-    if(userValue < 0 || userValue > 99 || isNaN(userValue)) {
+    if(userValue < 0 || userValue > 100 || isNaN(userValue)) {
         message.style.color = "red"
-        message.textContent = "Make sure it's a number from 2 to 99!";
+        message.textContent = "Make sure it's a number from 2 to 100!";
     } else {
     message.textContent = "";
     messageMirror.textContent = "";
@@ -24,7 +40,7 @@ function drawBoard () {
     board.innerHTML = "";
     }
 
-    if (userValue == 0 || userValue > 99 || userValue == "") {
+    if (userValue == 0 || userValue > 100 || userValue == "") {
       for (i=0; i < 10 ; i++){
         const columnTile = document.createElement("div")
         columnTile.classList.add("column-tile")
@@ -33,6 +49,7 @@ function drawBoard () {
         for (j=0; j < 10; j++){
           const rowTile = document.createElement("div")
           rowTile.classList.add("row-tile")
+          // rowTile.addEventListener("mouseover", changeColor)
           columnTile.appendChild(rowTile)
         }
     
@@ -55,10 +72,18 @@ function drawBoard () {
         }
 
       }
+
+      startColor()
     }
  
-
-
+function startColor (){
+  let tiles = document.getElementsByClassName("row-tile");
+  for (let i = 0; i < tiles.length; i++) {
+      tiles[i].addEventListener("mouseover",(e) => {
+        tiles[i].style.backgroundColor = selectedColor;
+      });
+      }
+}
 
 
 function showHint(){
